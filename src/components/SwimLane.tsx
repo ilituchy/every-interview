@@ -34,17 +34,17 @@ export function SwimLane({
   }, [todos]);
 
   return (
-    <div className="bg-gray-50 rounded-lg shadow-sm border border-gray-200 h-[500px] flex flex-col">
+    <div className="bg-white rounded-lg border border-gray-200 h-[520px] flex flex-col">
       {/* Column header */}
-      <h2 className="text-xl font-semibold p-6 pb-4 text-gray-800 border-b border-gray-200">
+      <h2 className="text-sm font-semibold px-4 py-3 text-gray-700 bg-gray-50 border-b border-gray-200 uppercase tracking-wide">
         {title}
       </h2>
 
       {/* Todo items - scrollable area */}
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-6 pt-4">
-        <div className="space-y-3">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-3">
+        <div className="space-y-2">
           {todos.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center mt-8 italic">No items</p>
+            <p className="text-gray-400 text-sm text-center mt-8">No items</p>
           ) : (
             todos.map((todo) => (
               <TodoItem
