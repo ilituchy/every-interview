@@ -1,10 +1,114 @@
+import { useState } from 'react';
+import { SwimLane } from './components/SwimLane';
+import { TodoInputForm } from './components/TodoInputForm';
+import { Todo, TodoStatus, Column } from './types';
+
+// Column configuration
+const COLUMNS: Column[] = [
+  { id: 'todo', title: 'Todo' },
+  { id: 'inProgress', title: 'In Progress' },
+  { id: 'done', title: 'Done' },
+];
+
 export function ChallengeComponent() {
+  // State management
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  // Helper function to get todos for a specific column
+  const getTodosByStatus = (status: TodoStatus): Todo[] => {
+    return todos.filter((todo) => todo.status === status);
+  };
+
+  // Add new todo
+  const addTodo = (text: string) => {
+    const newTodo: Todo = {
+      id: Date.now(), // Simple ID generation
+      text: text.trim(),
+      status: 'todo',
+    };
+
+    setTodos([...todos, newTodo]);
+  };
+
+  // Move todo to the right (next status)
+  const moveRight = (id: number) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id !== id) return todo;
+
+        // Find current column index
+        const currentIndex = COLUMNS.findIndex((col) => col.id === todo.status);
+
+        // If not at the last column, move to next
+        if (currentIndex < COLUMNS.length - 1) {
+          return { ...todo, status: COLUMNS[currentIndex + 1].id };
+        }
+
+        return todo; // Already at last column
+      })
+    );
+  };
+
+  // Move todo to the left (previous status)
+  const moveLeft = (id: number) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id !== id) return todo;
+
+        // Find current column index
+        const currentIndex = COLUMNS.findIndex((col) => col.id === todo.status);
+
+        // If not at the first column, move to previous
+        if (currentIndex > 0) {
+          return { ...todo, status: COLUMNS[currentIndex - 1].id };
+        }
+
+        return todo; // Already at first column
+      })
+    );
+  };
+
+  // Delete a todo
+  const deleteTodo = (id: number) => {
+    if (window.confirm('Are you sure you want to delete this todo?')) {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    }
+  };
+
+  // Edit a todo
+  const editTodo = (id: number, newText: string) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, text: newText };
+        }
+        return todo;
+      })
+    );
+  };
+
   return (
-    <>
-      {/* Delete this h2, and add your own code here. */}
-      <h2 className="text-center py-48 text-xl text-gray-700">
-        Your code goes here
-      </h2>
-    </>
+    <div>
+      {/* Three column layout */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        {COLUMNS.map((column, index) => (
+          <SwimLane
+            key={column.id}
+            title={column.title}
+            todos={getTodosByStatus(column.id)}
+            status={column.id}
+            columnIndex={index}
+            totalColumns={COLUMNS.length}
+            onMoveLeft={moveLeft}
+            onMoveRight={moveRight}
+            onDelete={deleteTodo}
+            onEdit={editTodo}
+          />
+        ))}
+      </div>
+
+      {/* Add todo form */}
+      <TodoInputForm onAddTodo={addTodo} />
+    </div>
   );
 }
