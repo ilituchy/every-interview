@@ -1,16 +1,6 @@
-// Type Definitions
-type TodoStatus = 'todo' | 'inProgress' | 'done';
-
-interface Todo {
-  id: number;
-  text: string;
-  status: TodoStatus;
-}
-
-interface Column {
-  id: TodoStatus;
-  title: string;
-}
+import { useState } from 'react';
+import { SwimLane } from './components/SwimLane';
+import { Todo, TodoStatus, Column } from './types';
 
 // Column configuration
 const COLUMNS: Column[] = [
@@ -20,20 +10,31 @@ const COLUMNS: Column[] = [
 ];
 
 export function ChallengeComponent() {
-  // State will go here
-  // - todos: Todo[]
-  // - inputValue: string
+  // State management
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  // Functions will go here
-  // - addTodo: (text: string) => void
-  // - moveRight: (id: number) => void
-  // - moveLeft: (id: number) => void
+  // Helper function to get todos for a specific column
+  const getTodosByStatus = (status: TodoStatus): Todo[] => {
+    return todos.filter((todo) => todo.status === status);
+  };
+
+  // Movement functions will be added here
+  // const moveLeft = (id: number) => { ... }
+  // const moveRight = (id: number) => { ... }
 
   return (
-    <>
-      <h2 className="text-center py-48 text-xl text-gray-700">
-        Starting component "Hello world"
-      </h2>
-    </>
+    <div className="p-8">
+      {/* Three column layout */}
+      <div className="grid grid-cols-3 gap-4">
+        {COLUMNS.map((column) => (
+          <SwimLane
+            key={column.id}
+            title={column.title}
+            todos={getTodosByStatus(column.id)}
+            status={column.id}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
