@@ -69,9 +69,9 @@ export function ChallengeComponent() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-6 md:p-8">
       {/* Three column layout */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         {COLUMNS.map((column, index) => (
           <SwimLane
             key={column.id}

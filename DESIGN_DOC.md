@@ -35,3 +35,9 @@ Instead, I refactored to use column indices. Each SwimLane knows its position (0
 Same logic in the move functions - find the current column index in the COLUMNS array, then move to index +1 or -1.
 
 Now if I want to add more columns, I just update the COLUMNS array and everything adapts automatically. Way more flexible.
+
+## UX Enhancements
+
+**Text Truncation** - Todo items truncate text to 3 lines max with an ellipsis. Prevents users from adding extremely long text that breaks the layout. Used Tailwind's line-clamp-3 utility to handle this cleanly.
+
+**Auto-Scroll on Changes** - Each SwimLane automatically scrolls to the bottom when todos are added or moved. This keeps the most recent item visible without requiring manual scrolling. Implemented with useRef to track the scroll container and useEffect to trigger the scroll when the todos array changes.
