@@ -68,6 +68,25 @@ export function ChallengeComponent() {
     );
   };
 
+  // Delete a todo
+  const deleteTodo = (id: number) => {
+    if (window.confirm('Are you sure you want to delete this todo?')) {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    }
+  };
+
+  // Edit a todo
+  const editTodo = (id: number, newText: string) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, text: newText };
+        }
+        return todo;
+      })
+    );
+  };
+
   return (
     <div className="p-6 md:p-8">
       {/* Three column layout */}
@@ -82,6 +101,8 @@ export function ChallengeComponent() {
             totalColumns={COLUMNS.length}
             onMoveLeft={moveLeft}
             onMoveRight={moveRight}
+            onDelete={deleteTodo}
+            onEdit={editTodo}
           />
         ))}
       </div>

@@ -10,6 +10,8 @@ interface SwimLaneProps {
   totalColumns: number;
   onMoveLeft: (id: number) => void;
   onMoveRight: (id: number) => void;
+  onDelete: (id: number) => void;
+  onEdit: (id: number, newText: string) => void;
 }
 
 export function SwimLane({
@@ -18,7 +20,9 @@ export function SwimLane({
   columnIndex,
   totalColumns,
   onMoveLeft,
-  onMoveRight
+  onMoveRight,
+  onDelete,
+  onEdit
 }: SwimLaneProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +56,8 @@ export function SwimLane({
                 totalColumns={totalColumns}
                 onMoveLeft={onMoveLeft}
                 onMoveRight={onMoveRight}
+                onDelete={onDelete}
+                onEdit={onEdit}
               />
             ))
           )}
