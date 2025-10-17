@@ -5,9 +5,20 @@ interface SwimLaneProps {
   title: string;
   todos: Todo[];
   status: TodoStatus;
+  columnIndex: number;
+  totalColumns: number;
+  onMoveLeft: (id: number) => void;
+  onMoveRight: (id: number) => void;
 }
 
-export function SwimLane({ title, todos }: SwimLaneProps) {
+export function SwimLane({
+  title,
+  todos,
+  columnIndex,
+  totalColumns,
+  onMoveLeft,
+  onMoveRight
+}: SwimLaneProps) {
   return (
     <div className="bg-white p-4 rounded">
       {/* Column header */}
@@ -24,6 +35,10 @@ export function SwimLane({ title, todos }: SwimLaneProps) {
               id={todo.id}
               text={todo.text}
               status={todo.status}
+              columnIndex={columnIndex}
+              totalColumns={totalColumns}
+              onMoveLeft={onMoveLeft}
+              onMoveRight={onMoveRight}
             />
           ))
         )}

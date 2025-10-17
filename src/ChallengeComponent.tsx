@@ -30,20 +30,58 @@ export function ChallengeComponent() {
     setTodos([...todos, newTodo]);
   };
 
-  // Movement functions will be added here
-  // const moveLeft = (id: number) => { ... }
-  // const moveRight = (id: number) => { ... }
+  // Move todo to the right (next status)
+  const moveRight = (id: number) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id !== id) return todo;
+
+        // Find current column index
+        const currentIndex = COLUMNS.findIndex((col) => col.id === todo.status);
+
+        // If not at the last column, move to next
+        if (currentIndex < COLUMNS.length - 1) {
+          return { ...todo, status: COLUMNS[currentIndex + 1].id };
+        }
+
+        return todo; // Already at last column
+      })
+    );
+  };
+
+  // Move todo to the left (previous status)
+  const moveLeft = (id: number) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id !== id) return todo;
+
+        // Find current column index
+        const currentIndex = COLUMNS.findIndex((col) => col.id === todo.status);
+
+        // If not at the first column, move to previous
+        if (currentIndex > 0) {
+          return { ...todo, status: COLUMNS[currentIndex - 1].id };
+        }
+
+        return todo; // Already at first column
+      })
+    );
+  };
 
   return (
     <div className="p-8">
       {/* Three column layout */}
       <div className="grid grid-cols-3 gap-4 mb-8">
-        {COLUMNS.map((column) => (
+        {COLUMNS.map((column, index) => (
           <SwimLane
             key={column.id}
             title={column.title}
             todos={getTodosByStatus(column.id)}
             status={column.id}
+            columnIndex={index}
+            totalColumns={COLUMNS.length}
+            onMoveLeft={moveLeft}
+            onMoveRight={moveRight}
           />
         ))}
       </div>
